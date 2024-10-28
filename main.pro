@@ -23,8 +23,22 @@ siente(Persona, Sintoma) :-
 alivia(Farmaco, Enfermedad) :- 
     suprime(Farmaco, Sintoma), es_sintoma(Sintoma, Enfermedad). 
 
-%Hechos ARBOL FAMILIAR
+aliviara_con(Farmaco, Persona) :-
+    padece(Persona, Enfermedad), alivia(Farmaco, Enfermedad).
 
+%%Preguntas
+%1. ¿Qué enfermedad padece un individuo en particular? (este individuo será ingresado desde teclado).
+%?- padece_de(gustavo, X), write("gustavo padece de: "), write(X),nl,ln.
+%2. ¿Quiénes padecen gripe?
+%?- padece_de(X, gripe), write(X), nl, ln.
+%3. ¿Quiénes sienten dolor de estómago?
+%?- siente(X, dolorEstomago), write(X), nl, ln.
+%4. ¿Quiénes sienten cansancio?
+%?-siente(X, cansancio), write(X), nl, ln.
+%5. ¿Qué fármaco aliviará a un individuo particular? (este individuo será ingresado desde teclado).
+%?-aliviara_con(X, gustavo), write("gustavo aliviara con: "), write(X),nl,ln.
+
+%Hechos ARBOL FAMILIAR
 
 esHombre(javier).
 esHombre(lisandro).
@@ -64,9 +78,15 @@ son_mujeres(X) :- esMujer(X).
 es_padre_de(Padre,Hijo) :- esPadre(Padre,Hijo).
 son_esposos(Esposa, Esposo):- sonEsposos(Esposa, Esposo), sonEsposos(Eposo, Esposa).
 
-es_hermana_de(Hermana, Hermano) :- esMujer(Hermana), sonPadres_de(X,Y, Hermana), sonPadres(X,Y, Hermano).
+es_hermana_de(Hermana, Hermano) :- 
+    esMujer(Hermana), 
+    (sonPadres_de(X,Y, Hermana);sonPadres_de(Y,X, Hermana)), 
+    (sonPadres_de(X,Y, Hermano);sonPadres_de(Y,X, Hermano)).
 
-es_hermano_de(Hermano, Hermana) :- esHombre(Hermano), sonPadres_de(X,Y, Hermana), sonPadres(X,Y, Hermano).
+es_hermano_de(Hermano, Hermana) :- 
+    esHombre(Hermano), 
+    (sonPadres_de(X,Y, Hermana); sonPadres_de(Y,X, Hermana)), 
+    (sonPadres_de(X,Y, Hermano); sonPadres_de(Y,X, Hermana)).
 
 es_hijo_de(Hijo, Padre) :-
     esHombre(Hijo),
@@ -78,7 +98,7 @@ es_hija_de(Hija, Padre) :-
 
 %Preguntas
 
-?-es_hermana_de(jimena, X).
+%?-es_hermana_de(jimena, X).
 
 
 %Interfaz
