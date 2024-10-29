@@ -269,20 +269,27 @@ ventana_quienes_padecen_de_gripe(init):-button(_,_,boton_iniciar_2(_),"&Iniciar"
 boton_iniciar_2(press) :-
     Linea = 150,
     text_out(50, 120, "Quienes padecen de gripa?"),
-	padece_de(X, gripe, Linea),
-	text_out(50, Linea, print(X)),nl,ln.
+	(padece_de(_, gripe, Linea)->
+		padece_de(X, gripe, Linea),
+		text_out(50, Linea, print(X)),nl,ln
+	;
+		message("resultado", "Nadie tiene gripa.",s)
+	).
 
 %crear la subfuncion para quienes padecen dolor de estomago
 quienes_sienten_dolor_de_estomago(press):-
-window( _, _, ventana_sienten_dolor_de_estomago(_), "Quienes de dolor de esomago?", 150,50,800,800).
+window( _, _, ventana_sienten_dolor_de_estomago(_), "Quienes sienten dolor de esomago?", 150,50,800,800).
 ventana_sienten_dolor_de_estomago(init):-button(_,_,boton_iniciar_3(_),"&Iniciar",320,35,95,30).
 
 boton_iniciar_3(press) :-
     Linea = 150,
-    text_out(50, 120, "Quienes de dolor de esomago?"),
-	siente(X, dolorEstomago, Linea),
-	text_out(50, Linea, print(X)),nl,ln.
-
+    text_out(50, 120, "Quienes sienten dolor de esomago?"),
+	(	siente(_, dolorEstomago, Linea)->
+		siente(X, dolorEstomago, Linea),
+		text_out(50, Linea, print(X)),nl,ln
+	;
+		message("resultado", "Nadie siente dolor de estomago.",s)
+	).
 
 %crear la subfuncion para quienes sienten cansancio
 quienes_sienten_cansancio(press):-
@@ -292,8 +299,12 @@ ventana_sienten_cansancio(init):-button(_,_,boton_iniciar_4(_),"&Iniciar",320,35
 boton_iniciar_4(press) :-
     Linea = 150,
     text_out(50, 120, "quienes sienten cansancio?"),
-	siente(X, cansancio, Linea),
-	text_out(50, Linea, print(X)),nl,ln.
+	(	siente(_, cansancio, Linea)->
+		siente(X, cansancio, Linea),
+		text_out(50, Linea, print(X)),nl,ln
+	;
+		message("resultado", "Nadie siente dolor de estomago.",s)
+	).
 
 %crear la subfuncion para que facaio alivia
 que_faramaco_alivia(press):-
