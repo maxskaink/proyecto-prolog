@@ -124,22 +124,19 @@ cerrar_ven(press):- close_window(X).
 %crear el submenï¿½ lï¿½gico
 ola_invernal(init):-
 menu(normal, _,_,que_enfermedad_padece(_),"&Que enfermedad padece un individuo en particular?"),
-menu(pop_up, _,_,quienes_padecen_gripe(_),"&Quienes padecen gripe?"),
-menu(pop_up, _,_,quienes_sienten_dolor_de_estomago(_),"&Quienes sienten dolor de estomago?"),
-menu(pop_up, _,_,quienes_sienten_cansancio(_),"&¿Quiénes sienten cansancio?"),
-menu(pop_up, _,_,que_faramacio_alivia(_),"&¿Qué fármaco aliviará a un individuo particular? ").
+menu(normal, _,_,quienes_padecen_gripe(_),"&Quienes padecen gripe?"),
+menu(normal, _,_,quienes_sienten_dolor_de_estomago(_),"&Quienes sienten dolor de estomago?"),
+menu(normal, _,_,quienes_sienten_cansancio(_),"&¿Quiénes sienten cansancio?"),
+menu(normal, _,_,que_faramaco_alivia(_),"&¿Qué fármaco aliviará a un individuo particular? ").
 
     
     
 
-%crear la subfunciï¿½n para prestar libro
+%crear la subfunciïon para prestar enfermedad padece
 
 que_enfermedad_padece(press):-  
 window( _, _, ventana_que_enfermedad_padece(_), "Que enfermedad padece un individuo en particular?", 150,50,450,450).
-
-
-ventana_que_enfermedad_padece(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
-
+ventana_que_enfermedad_padece(press):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
 
 boton_iniciarPL(press):-
     Linea :=150,
@@ -148,24 +145,29 @@ boton_iniciarPL(press):-
     text_out(50, Linea, print(X)),ln.
 
 
-quienes_padecen_gripe(init):-
-menu(normal, _,_,primera(_),"&Primera Pregunta"), 
-menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
-menu(normal, _,_,tercera(_),"&Tercera Pregunta").
+%crear la subfuncion para quienes padecen gripe
+quienes_padecen_gripe(press):-
+window( _, _, ventana_quienes_padecen_de_gripe(_), "Quienes padecen de gripa?", 150,50,450,450).
+ventana_quienes_padecen_de_gripe(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
 
-quienes_sienten_dolor_de_estomago(init):-
-    menu(normal, _,_,primera(_),"&Primera Pregunta"), 
-    menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
-    menu(normal, _,_,tercera(_),"&Tercera Pregunta").
 
-quienes_sienten_cansancio(init):-
-    menu(normal, _,_,primera(_),"&Primera Pregunta"), 
-    menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
-    menu(normal, _,_,tercera(_),"&Tercera Pregunta").
-que_faramacio_alivia(init):-
-    menu(normal, _,_,primera(_),"&Primera Pregunta"), 
-    menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
-    menu(normal, _,_,tercera(_),"&Tercera Pregunta").
+%crear la subfuncion para quienes padecen dolor de estomago
+quienes_sienten_dolor_de_estomago(press):-
+window( _, _, ventana_sienten_dolor_de_estomago(_), "Quienes de dolor de esomago", 150,50,450,450).
+ventana_sienten_dolor_de_estomago(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+
+
+
+%crear la subfuncion para quienes sienten cansancio
+quienes_sienten_cansancio(press):-
+window( _, _, ventana_sienten_cansancio(_), "quienes sienten cansancio", 150,50,450,450).
+ventana_sienten_cansancio(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+
+
+%crear la subfuncion para que facaio alivia
+que_faramaco_alivia(press):-
+window( _, _, ventana_que_farmaco_alivia(_), "que farmaco alivia", 150,50,450,450).
+ventana_que_farmaco_alivia(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
 
 
 primera(press):-  
