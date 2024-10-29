@@ -102,3 +102,114 @@ es_hija_de(Hija, Padre) :-
 
 
 %Interfaz
+
+%-----------------------------------------
+
+?-window(_, _,crea_ventana(),"Aplicaciï¿½n",150, 50, 450, 450).
+
+%crea el menï¿½
+
+crea_ventana(init):- 
+menu(pop_up, _,_,salir(_),"&ARCHIVO"), 
+menu(pop_up, _,_,ola_invernal(_),"&OLA INVERNAL").
+menu(pop_up, _,_,arbol_generazional(_),"&ARBOL GENERACIONAL").
+
+%Crea el Submenï¿½ Salir
+salir(init):-	
+menu(normal, _,_,cerrar_ven(_),"&Salir").
+cerrar_ven(press):- close_window(X).
+
+
+%--------------------------------------------
+%crear el submenï¿½ lï¿½gico
+ola_invernal(init):-
+menu(normal, _,_,que_enfermedad_padece(_),"&Que enfermedad padece un individuo en particular?"),
+menu(pop_up, _,_,quienes_padecen_gripe(_),"&Quienes padecen gripe?"),
+menu(pop_up, _,_,quienes_sienten_dolor_de_estomago(_),"&Quienes sienten dolor de estomago?"),
+menu(pop_up, _,_,quienes_sienten_cansancio(_),"&¿Quiénes sienten cansancio?"),
+menu(pop_up, _,_,que_faramacio_alivia(_),"&¿Qué fármaco aliviará a un individuo particular? ").
+
+    
+    
+
+%crear la subfunciï¿½n para prestar libro
+
+que_enfermedad_padece(press):-  
+window( _, _, ventana_que_enfermedad_padece(_), "Que enfermedad padece un individuo en particular?", 150,50,450,450).
+
+
+ventana_que_enfermedad_padece(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+
+
+boton_iniciarPL(press):-
+    Linea :=150,
+    text_out(50,100,"Quien le puede prestar un libro a Jimena?"),
+    presta_libro(X,jimena,Linea),
+    text_out(50, Linea, print(X)),ln.
+
+
+quienes_padecen_gripe(init):-
+menu(normal, _,_,primera(_),"&Primera Pregunta"), 
+menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
+menu(normal, _,_,tercera(_),"&Tercera Pregunta").
+
+quienes_sienten_dolor_de_estomago(init):-
+    menu(normal, _,_,primera(_),"&Primera Pregunta"), 
+    menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
+    menu(normal, _,_,tercera(_),"&Tercera Pregunta").
+
+quienes_sienten_cansancio(init):-
+    menu(normal, _,_,primera(_),"&Primera Pregunta"), 
+    menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
+    menu(normal, _,_,tercera(_),"&Tercera Pregunta").
+que_faramacio_alivia(init):-
+    menu(normal, _,_,primera(_),"&Primera Pregunta"), 
+    menu(normal, _,_,segunda(_),"&Segunda Pregunta"),
+    menu(normal, _,_,tercera(_),"&Tercera Pregunta").
+
+
+primera(press):-  
+window( _, _, ventana_primera(_), "ï¿½Quï¿½ noble es rufian?", 150,50,450,450).
+segunda(press):-  
+window( _, _, ventana_segunda(_), "ï¿½Quien es suceptible por Pedro?", 150,50,450,450).
+tercera(press):-  
+window( _, _, ventana_tercera(_), "ï¿½Quien es suceptible por Pedro?", 150,50,450,450).
+
+ventana_primera(init):- window_brush(_, rgb(166, 129, 182)),
+                    button(_,_,boton_iniciarP1(_),"&Iniciar",320,35,95,30).
+
+ventana_segunda(init):- window_brush(_, rgb(166, 129, 182)),
+                    button(_,_,boton_iniciarP2(_),"&Iniciar",320,35,95,30).
+
+ventana_tercera(init):- window_brush(_, rgb(166, 129, 182)),
+                    button(_,_,boton_iniciarP3(_),"&Iniciar",320,35,95,30).
+
+
+
+boton_iniciarP1(press):-
+    	Linea:= 100,
+	text_out(50,Linea,"ï¿½Quien es rufian?"),
+	noble_rufian(X, Linea),
+	text_out(50,Linea, print(X)),ln.
+	
+boton_iniciarP2(press):-
+    	Linea:= 100,
+	text_out(50,Linea,"ï¿½Quien es suceptible de ser raptada por Pedro?"),
+	rufian_rapta(Pedro,Y),
+	text_out(50,Linea, print(Y)),ln.
+	
+boton_iniciarP3(press):-
+    	Linea:= 100,
+	text_out(50,Linea,"ï¿½Quien puede raptar a Monica?"),
+	desea(X,monica),
+	text_out(50,Linea, print(X)),ln.
+
+
+
+
+
+
+
+
+
+
