@@ -16,10 +16,12 @@ suprime(lomotil, dolorEstomago).
 
 %Reglas OLA INVERNAL
 
-padece_de(Persona, Enfermedad) :- 
-    padece(Persona, Enfermedad).
+padece_de(Persona, Enfermedad, Linea) :- 
+    padece(Persona, Enfermedad), Linea := Linea+20.
+
 siente(Persona, Sintoma) :- 
     padece(Persona, Enfermedad), es_sintoma(Sintoma, Enfermedad).
+
 alivia(Farmaco, Enfermedad) :- 
     suprime(Farmaco, Sintoma), es_sintoma(Sintoma, Enfermedad). 
 
@@ -126,24 +128,27 @@ ola_invernal(init):-
 menu(normal, _,_,que_enfermedad_padece(_),"&Que enfermedad padece un individuo en particular?"),
 menu(normal, _,_,quienes_padecen_gripe(_),"&Quienes padecen gripe?"),
 menu(normal, _,_,quienes_sienten_dolor_de_estomago(_),"&Quienes sienten dolor de estomago?"),
-menu(normal, _,_,quienes_sienten_cansancio(_),"&¿Quiénes sienten cansancio?"),
-menu(normal, _,_,que_faramaco_alivia(_),"&¿Qué fármaco aliviará a un individuo particular? ").
+menu(normal, _,_,quienes_sienten_cansancio(_),"&ï¿½Quiï¿½nes sienten cansancio?"),
+menu(normal, _,_,que_faramaco_alivia(_),"&ï¿½Quï¿½ fï¿½rmaco aliviarï¿½ a un individuo particular? ").
 
     
     
 
-%crear la subfunciïon para prestar enfermedad padece
+%crear la subfunciï¿½on para prestar enfermedad padece
 
 que_enfermedad_padece(press):-  
-window( _, _, ventana_que_enfermedad_padece(_), "Que enfermedad padece un individuo en particular?", 150,50,450,450).
-ventana_que_enfermedad_padece(press):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+window( _, _, ventana_que_enfermedad_padece(_), "Que enfermedad padece un individuo en particular?", 150,50,800,800).
+ventana_que_enfermedad_padece(init):-button(_,_,boton_iniciar_1(_),"&Iniciar",320,35,95,30).
 
-boton_iniciarPL(press):-
-    Linea :=150,
-    text_out(50,100,"Quien le puede prestar un libro a Jimena?"),
-    presta_libro(X,jimena,Linea),
-    text_out(50, Linea, print(X)),ln.
-
+boton_iniciar_1(press) :-
+    Linea = 150,
+    read(Nombre, "Ingrese el nombre de la persona que desea consultar:"),
+    text_out(50, 120, "Que enfermedad padece el individuo?"),
+    (   padece_de(Nombre, X, Linea)
+    ->  text_out(50, Linea, print(X))
+    ;   text_out(50, Linea, "No se encontrado ninguna enfermedad para esta persona.")
+    ),
+    nl.
 
 %crear la subfuncion para quienes padecen gripe
 quienes_padecen_gripe(press):-
