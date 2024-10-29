@@ -1,8 +1,8 @@
-#Desarrolladores
+# Desarrolladores
 - Miguel Angel Calambas Vivas
 - Esteban Santiago Escandon Causaya
 
-#Entrega Proyecto prolog
+# Entrega Proyecto prolog
 En el menú “OLA INVERNAL”, debe aparecer los siguientes submenús y cada uno
 abrirá una ventana nueva, que permitan contestar las siguientes preguntas:
 1. ¿Qué enfermedad padece un individuo en particular? (este individuo será
