@@ -1,4 +1,4 @@
-%Hechos OLA INVERNAL
+%============= Hechos OLA INVERNAL =============
 
 padece(gustavo, gripe).
 padece(shakira, hepatitis).
@@ -14,7 +14,7 @@ es_sintoma(cansancio, gripe).
 suprime(aspirina, fiebre).
 suprime(lomotil, dolorEstomago).
 
-%Reglas OLA INVERNAL
+%============= Reglas OLA INVERNAL =============
 
 padece_de(Persona, Enfermedad, Linea) :- 
     padece(Persona, Enfermedad), Linea := Linea+20.
@@ -32,19 +32,7 @@ alivia(Farmaco, Enfermedad) :-
 aliviara_con(Persona, Farmaco ,Linea) :-
     padece(Persona, Enfermedad), alivia(Farmaco, Enfermedad), Linea := Linea+20.
 
-%%Preguntas
-%1. ¿Qué enfermedad padece un individuo en particular? (este individuo será ingresado desde teclado).
-%?- padece_de(gustavo, X), write("gustavo padece de: "), write(X),nl,ln.
-%2. ¿Quiénes padecen gripe?
-%?- padece_de(X, gripe), write(X), nl, ln.
-%3. ¿Quiénes sienten dolor de estómago?
-%?- siente(X, dolorEstomago), write(X), nl, ln.
-%4. ¿Quiénes sienten cansancio?
-%?-siente(X, cansancio), write(X), nl, ln.
-%5. ¿Qué fármaco aliviará a un individuo particular? (este individuo será ingresado desde teclado).
-%?-aliviara_con(X, gustavo), write("gustavo aliviara con: "), write(X),nl,ln.
-
-%Hechos ARBOL FAMILIAR
+%============= Hechos ARBOL FAMILIAR =============
 
 esHombre(javier).
 esHombre(lisandro).
@@ -75,7 +63,7 @@ sonEsposos(jimena, lisandro).
 sonEsposos(carlos, belkis).
 sonEsposos(belkis, carlos).
 
-%Reglas ARBOL FAMILIAR
+%============= Reglas ARBOL FAMILIAR =============
 
 
 son_hombres(X) :- esHombre(X).
@@ -102,32 +90,25 @@ es_hija_de(Hija, Padre) :-
     esMujer(Hija),
     (sonPadres_de(Padre, _, Hija); sonPadres_de(_,Padre,Hija)).
 
-%Preguntas
-
-%?-es_hermana_de(jimena, X).
-
-
-%Interfaz
-
-%-----------------------------------------
+%============= Interfaz =============
 
 ?-window(_, _,crea_ventana(),"Aplicaci�n",150, 50, 450, 450).
 
-%crea el men�
+%----- crea el menu -----
 
 crea_ventana(init):- 
 menu(pop_up, _,_,salir(_),"&ARCHIVO"), 
 menu(pop_up, _,_,ola_invernal(_),"&OLA INVERNAL").
 menu(pop_up, _,_,arbol_generazional(_),"&ARBOL GENERACIONAL").
 
-%Crea el Submen� Salir
+%----- Crea el submenu Salir -----
 salir(init):-	
 menu(normal, _,_,cerrar_ven(_),"&Salir").
 cerrar_ven(press):- close_window(X).
 
 
 %--------------------------------------------
-%crear el submen� l�gico
+%>crear el submenu logico
 ola_invernal(init):-
 menu(normal, _,_,que_enfermedad_padece(_),"&Que enfermedad padece un individuo en particular?"),
 menu(normal, _,_,quienes_padecen_gripe(_),"&Quienes padecen gripe?"),
@@ -138,7 +119,7 @@ menu(normal, _,_,que_faramaco_alivia(_),"&Que farmaco aliviara a un individuo pa
     
     
 
-%crear la subfunci�on para prestar enfermedad padece
+%crear la subfuncion para prestar enfermedad padece
 
 que_enfermedad_padece(press):-  
 window( _, _, ventana_que_enfermedad_padece(_), "Que enfermedad padece un individuo en particular?", 150,50,800,800).
