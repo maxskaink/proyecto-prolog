@@ -19,14 +19,14 @@ suprime(lomotil, dolorEstomago).
 padece_de(Persona, Enfermedad, Linea) :- 
     padece(Persona, Enfermedad), Linea := Linea+20.
 
-siente(Persona, Sintoma) :- 
-    padece(Persona, Enfermedad), es_sintoma(Sintoma, Enfermedad).
+siente(Persona, Sintoma, Linea) :- 
+    padece(Persona, Enfermedad), es_sintoma(Sintoma, Enfermedad), Linea := Linea+20.
 
-alivia(Farmaco, Enfermedad) :- 
-    suprime(Farmaco, Sintoma), es_sintoma(Sintoma, Enfermedad). 
+alivia(Farmaco, Enfermedad,Linea) :- 
+    suprime(Farmaco, Sintoma), es_sintoma(Sintoma, Enfermedad), Linea := Linea+20. 
 
-aliviara_con(Farmaco, Persona) :-
-    padece(Persona, Enfermedad), alivia(Farmaco, Enfermedad).
+aliviara_con(Farmaco, Persona,Linea) :-
+    padece(Persona, Enfermedad), alivia(Farmaco, Enfermedad), Linea := Linea+20.
 
 %%Preguntas
 %1. ¿Qué enfermedad padece un individuo en particular? (este individuo será ingresado desde teclado).
@@ -152,15 +152,25 @@ boton_iniciar_1(press) :-
 
 %crear la subfuncion para quienes padecen gripe
 quienes_padecen_gripe(press):-
-window( _, _, ventana_quienes_padecen_de_gripe(_), "Quienes padecen de gripa?", 150,50,450,450).
-ventana_quienes_padecen_de_gripe(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+window( _, _, ventana_quienes_padecen_de_gripe(_), "Quienes padecen de gripa?", 150,50,800,800).
+ventana_quienes_padecen_de_gripe(init):-button(_,_,boton_iniciar_2(_),"&Iniciar",320,35,95,30).
 
+boton_iniciar_2(press) :-
+    Linea = 150,
+    text_out(50, 120, "Quienes padecen de gripa?"),
+	padece_de(X, gripe, Linea),
+	text_out(50, Linea, print(X)),nl,ln.
 
 %crear la subfuncion para quienes padecen dolor de estomago
 quienes_sienten_dolor_de_estomago(press):-
-window( _, _, ventana_sienten_dolor_de_estomago(_), "Quienes de dolor de esomago", 150,50,450,450).
-ventana_sienten_dolor_de_estomago(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+window( _, _, ventana_sienten_dolor_de_estomago(_), "Quienes de dolor de esomago?", 150,50,800,800).
+ventana_sienten_dolor_de_estomago(init):-button(_,_,boton_iniciar_3(_),"&Iniciar",320,35,95,30).
 
+boton_iniciar_3(press) :-
+    Linea = 150,
+    text_out(50, 120, "Quienes de dolor de esomago?"),
+	siente(X, dolorEstomago, Linea),
+	text_out(50, Linea, print(X)),nl,ln.
 
 
 %crear la subfuncion para quienes sienten cansancio
