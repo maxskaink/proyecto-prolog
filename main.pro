@@ -25,7 +25,11 @@ siente(Persona, Sintoma, Linea) :-
 alivia(Farmaco, Enfermedad,Linea) :- 
     suprime(Farmaco, Sintoma), es_sintoma(Sintoma, Enfermedad), Linea := Linea+20. 
 
-aliviara_con(Farmaco, Persona,Linea) :-
+alivia(Farmaco, Enfermedad) :- 
+    suprime(Farmaco, Sintoma), es_sintoma(Sintoma, Enfermedad). 
+
+
+aliviara_con(Persona, Farmaco ,Linea) :-
     padece(Persona, Enfermedad), alivia(Farmaco, Enfermedad), Linea := Linea+20.
 
 %%Preguntas
@@ -128,8 +132,8 @@ ola_invernal(init):-
 menu(normal, _,_,que_enfermedad_padece(_),"&Que enfermedad padece un individuo en particular?"),
 menu(normal, _,_,quienes_padecen_gripe(_),"&Quienes padecen gripe?"),
 menu(normal, _,_,quienes_sienten_dolor_de_estomago(_),"&Quienes sienten dolor de estomago?"),
-menu(normal, _,_,quienes_sienten_cansancio(_),"&�Qui�nes sienten cansancio?"),
-menu(normal, _,_,que_faramaco_alivia(_),"&�Qu� f�rmaco aliviar� a un individuo particular? ").
+menu(normal, _,_,quienes_sienten_cansancio(_),"&Quienes  sienten cansancio?"),
+menu(normal, _,_,que_faramaco_alivia(_),"&Que farmaco aliviara a un individuo particular? ").
 
     
     
@@ -175,15 +179,29 @@ boton_iniciar_3(press) :-
 
 %crear la subfuncion para quienes sienten cansancio
 quienes_sienten_cansancio(press):-
-window( _, _, ventana_sienten_cansancio(_), "quienes sienten cansancio", 150,50,450,450).
-ventana_sienten_cansancio(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+window( _, _, ventana_sienten_cansancio(_), "quienes sienten cansancio?", 150,50,450,450).
+ventana_sienten_cansancio(init):-button(_,_,boton_iniciar_4(_),"&Iniciar",320,35,95,30).
 
+boton_iniciar_4(press) :-
+    Linea = 150,
+    text_out(50, 120, "quienes sienten cansancio?"),
+	siente(X, cansancio, Linea),
+	text_out(50, Linea, print(X)),nl,ln.
 
 %crear la subfuncion para que facaio alivia
 que_faramaco_alivia(press):-
-window( _, _, ventana_que_farmaco_alivia(_), "que farmaco alivia", 150,50,450,450).
-ventana_que_farmaco_alivia(init):-button(_,_,boton_iniciarPL(_),"&Iniciar",320,35,95,30).
+window( _, _, ventana_que_farmaco_alivia(_), "que farmaco aliviara a un individuo en particular?", 150,50,800,800).
+ventana_que_farmaco_alivia(init):-button(_,_,boton_iniciar_5(_),"&Iniciar",320,35,95,30).
 
+boton_iniciar_5(press) :-
+    Linea = 150,
+    read(Nombre, "Ingrese el nombre del individuo que desea consultar su farmaco:"),
+    text_out(50, 120, "que farmaco aliviara al individuo?"),
+    (   aliviara_con(Nombre, X, Linea)
+    ->  text_out(50, Linea, print(X))
+    ;   text_out(50, Linea, "No se encontrado un farmaco para aliviar al individuo")
+    ),
+    nl.
 
 primera(press):-  
 window( _, _, ventana_primera(_), "�Qu� noble es rufian?", 150,50,450,450).
