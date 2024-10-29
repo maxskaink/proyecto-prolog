@@ -66,22 +66,23 @@ sonEsposos(belkis, carlos).
 %============= Reglas ARBOL FAMILIAR =============
 
 
-son_hombres(X) :- esHombre(X).
-son_mujeres(X) :- esMujer(X).
+es_hombre(X) :- esHombre(X).
+es_hombre(X) :- esMujer(X).
 
-es_padre_de(Padre,Hijo) :- esPadre(Padre,Hijo).
+es_padre_de(Padre,Madre,Hijo) :- sonPadres_de(Padre,Madre,Hijo); sonPadres_de(Madre,Padre,Hijo),!.
 son_esposos(Esposa, Esposo):- sonEsposos(Esposa, Esposo), sonEsposos(Eposo, Esposa).
 
 es_hermana_de(Hermana, Hermano) :- 
     esMujer(Hermana), 
-    (sonPadres_de(X,Y, Hermana);sonPadres_de(Y,X, Hermana)), 
-    (sonPadres_de(X,Y, Hermano);sonPadres_de(Y,X, Hermano)).
+    es_padre_de(X,Y,Hermana), 
+    es_padre_de(X,Y.Hermano),
+	Hermano\= Hermana.
 
 es_hermano_de(Hermano, Hermana) :- 
-    esHombre(Hermano), 
-    (sonPadres_de(X,Y, Hermana); sonPadres_de(Y,X, Hermana)), 
-    (sonPadres_de(X,Y, Hermano); sonPadres_de(Y,X, Hermana)).
-
+   	esHombre(Hermano),
+    es_padre_de(Padre, Madre, Hermana),
+    es_padre_de(Padre, Madre, Hermano),
+	Hermano\= Hermana.
 es_hijo_de(Hijo, Padre) :-
     esHombre(Hijo),
     (sonPadres_de(Padre, _, Hijo); sonPadres_de(_,Padre,Hijo)).
@@ -89,10 +90,19 @@ es_hijo_de(Hijo, Padre) :-
 es_hija_de(Hija, Padre) :-
     esMujer(Hija),
     (sonPadres_de(Padre, _, Hija); sonPadres_de(_,Padre,Hija)).
+es_tia(Tia, SobrinaOSobrino) :-
+    esMujer(Tia),
+    es_hermana_de(Tia, MadreOPadre),
+    es_padre_de(MadreOPadre, _, SobrinaOSobrino).
+es_tio(Tio, SobrinaOSobrino) :-
+    esHombre(Tio),
+    es_hermano_de(Tio, MadreOPadre), es_padre_de(MadreOPadre, _, SobrinaOSobrino).
+
+
 
 %============= Interfaz =============
 
-?-window(_, _,crea_ventana(),"Aplicacion",150, 50, 450, 450).
+?-window(_, _,crea_ventana(),"Aplicacion",150, 100, 400, 300).
 
 %----- crea el menu -----
 
@@ -114,95 +124,127 @@ menu(normal, _,_,que_enfermedad_padece(_),"&Que enfermedad padece un individuo e
 menu(normal, _,_,quienes_padecen_gripe(_),"&Quienes padecen gripe?"),
 menu(normal, _,_,quienes_sienten_dolor_de_estomago(_),"&Quienes sienten dolor de estomago?"),
 menu(normal, _,_,quienes_sienten_cansancio(_),"&Quienes  sienten cansancio?"),
-menu(normal, _,_,ventana_preguntas(_),"&Que farmaco aliviara a un individuo particular? ").
+menu(normal, _,_,que_faramaco_alivia(_),"&Que farmaco aliviara a un individuo particular? ").
 
 
 %crear la subfuncion para prestar Arbol Geneaoligico
 %-------------------------------------------------------------
-arbol_generazional(init):
-menu(normal, _,_,preguntas(_),"&preguntas?").   
+arbol_generazional(init):-
+menu(normal, _,_,preguntas(_),"&preguntas").   
     
 
 preguntas(press):-
-window( _, _, ventana_preguntas(_), "&informe", 150,500,8000,8000).
-ventana_preguntas(init):-button(_,_,boton_iniciar_arbol(_),"&Iniciar",320,35,95,30).
+window( _, _, ventana_preguntas(_), "&informe", 150,500,800,800).
 
-boton_iniciar_arbol(press) :-
-    Linea1 = 100,
-    Linea2 = 140,
-    Linea3 = 180,
-    Linea4 = 220,
-    Linea5 = 260,
-    Linea7 = 300,
-    Linea8 = 340,
-    Linea9 = 380,
-    Linea10 = 420,
-    Linea11 = 460,
-    text_out(50, 80, "¿Quién es hermana de Jimena?"),
-    es_hermana_de(jimena, Y),
-    text_out(50, Linea1, print(Y)), nl,
+ventana_preguntas(init):-
+button(_,_,boton_jimenaHermanos(_),"¿Jimena tiene hermanos?",20,35,200,30),
+button(_,_,boton_quienEsHermanoDeJimena(_),"&¿Quien es el hermano de jimena?",420,35,250,30),
+button(_,_,boton_padres_carlos(_),"&¿Quienes son los padres de carlos?",20,100,250,30),
 
-    text_out(50, 120, "¿Quiénes son los padres de Carlos?"),
-    es_hijo_de(carlos, PadreCarlos),
-    es_hijo_de(carlos, MadreCarlos),
-    text_out(50, Linea2, print(PadreCarlos)),
-    text_out(120, Linea2, print(MadreCarlos)), nl,
+button(_,_,boton_jimenaHijaJavier(_),"&¿Es jimena hija de javier?",220,35,200,30),
+button(_,_,boton_esCarlosHijaMaria(_),"&¿es carlos hija de maria?",500,100,250,30),
+button(_,_,boton_esJoaquinHijoBelkis(_),"&¿es joaquin hijo de Belkis?",20,200,250,30),
 
-    text_out(50, 160, "¿Es Jimena hija de Javier?"),
+button(_,_,boton_esLuisaHijaCarlos(_),"&¿es Luisa hija de carlos?",270,200,250,30),
+button(_,_,boton_esMatiasHijoLisandro(_),"&¿Es matias hijo de lisandro?",520,200,260,30),
+button(_,_,boton_esMatiasHijoJimena(_),"&¿Es matias hijo de jimena?",20,300,250,30),
+
+button(_,_,boton_quienHijoDeJimena(_),"&¿Quien es hijo de jimena?",270,100,200,30),
+button(_,_,boton_esJoaqinHermanoMatias(_),"&¿Es joaquin hermano de matias?",270,300,260,30),
+button(_,_,boton_quienEsHeramanodeJoaquin(_),"&¿Quien es el hermano de joaquin?",520,300,260,30),
+
+button(_,_,boton_estio(_),"&¿Es tio?",220,350,260,30),
+button(_,_,boton_estia(_),"&¿Es tia?",500,350,260,30).
+
+
+
+boton_jimenaHermanos(press):-
+     Linea = 100,
+    (es_hermana_de(jimena, Hermano) -> 
+        message("jimena tiene hermanos", "SI", i) 
+    ; 
+        message("jimena tiene hermanos", "NO", i) 
+    ), nl.
+
+boton_quienEsHermanoDeJimena(press):-
+    (es_hermana_de(jimena, Hermano) -> 
+        message("quien es hermanode jimiena", print(Hermano), i) 
+    ; 
+        message("quien es hermanode jimiena", "NO", i) 
+    ), nl.
+
+
+boton_jimenaHijaJavier(press) :-
+     Linea = 100,
     (es_hija_de(jimena, javier) -> 
-        text_out(50, Linea3, "Sí") 
+        message("hijos de jimena", "SI", i) 
     ; 
-        text_out(50, Linea3, "No")
-    ), nl,
-	text_out(50, 200, "¿Es Carlos hijo de Maria?"),
-    (es_hijo_de(carlos, maria) -> 
-        text_out(50, Linea4, "Sí") 
-    ; 
-        text_out(50, Linea4, "No")
-    ), nl,
-	text_out(50, 240, "¿Es joaquin hijo de belkis?"),
-    (es_hijo_de(joaquin, javier) -> 
-        text_out(50, Linea5, "Sí") 
-    ; 
-        text_out(50, Linea5, "No")
-    ), nl,
-	text_out(50, 280, "¿Es luisa hija de carlos?"),
-    (es_hija_de(luisa, carlos) -> 
-        text_out(50, Linea6, "Sí") 
-    ; 
-        text_out(50, Linea6, "No")
-    ), nl,
-	text_out(50, 320, "¿Es matias hijo de Lisandro?"),
-    (es_hija_de(matias, lisandro) -> 
-        text_out(50, Linea7, "Sí") 
-    ; 
-        text_out(50, Linea7, "No")
-    ), nl,
-	text_out(50, 360, "¿Es matias hijo de jimena?"),
-    (es_hija_de(matias, jimena) -> 
-        text_out(50, Linea8, "Sí") 
-    ; 
-        text_out(50, Linea8, "No")
-    ), nl,
-	text_out(50, 400, "¿Es joaquin hermano de Matias?"),
-    (es_hermano_de(joaquin, matias) -> 
-        text_out(50, Linea9, "Sí") 
-    ; 
-        text_out(50, Linea9, "No")
-    ), nl,
-	text_out(50, 440, "¿quien es hermano de joaquin ?"),
-    (es_hija_de(jimena, javier) -> 
-        text_out(50, Linea10, "Sí") 
-    ; 
-        text_out(50, Linea10, "No")
+        message("hijos de jimena", "NO", i) 
     ), nl.
 
 
 boton_padres_carlos(press) :-
-    Linea = 150,
-    text_out(50, 120, "¿Quiénes son los padres de Carlos?"),
-    es_padre_de(PadreCarlos, carlos),
-    text_out(50, Linea, print(PadreCarlos)), nl.
+	es_padre_de( Padre,Madre, carlos),
+     message("el padre de: ", print(Padre), i), 
+     message("el padre de: ", print(Madre), i),nl. 
+
+boton_esJimenaHijaJavier(press):-
+    (es_hija_de(jimena, javier) -> 
+        message("es jimean hija de javier", "SI", i) 
+    ; 
+        message("hijos de jimena", "NO", i) 
+    ), nl.
+boton_esCarlosHijaMaria(press):-
+    (es_hijo_de(carlos, maria) -> 
+        message("es carlos hijo de maria", "SI", i) 
+    ; 
+        message("hijos de jimena", "NO", i) 
+    ), nl.
+boton_esJoaquinHijoBelkis(press):-
+    (es_hijo_de(joquin, belkis) -> 
+        message("es joaquin hijo de belkis", "SI", i) 
+    ; 
+        message("hijos de jimena", "NO", i) 
+    ), nl.
+
+boton_esLuisaHijaCarlos(press):-
+    (es_hija_de(luisa, carlos) -> 
+        message("es luisa hija de carlos", "SI", i) 
+    ; 
+        message("hijos de jimena", "NO", i) 
+    ), nl.
+boton_esMatiasHijoLisandro(press):-
+    (es_hijo_de(matias, lisandro) -> 
+        message("es matias hijo de lisandro", "SI", i) 
+    ; 
+        message("hijos de jimena", "NO", i) 
+    ), nl.
+boton_esMatiasHijoJimena(press):-
+    (es_hijo_de(matias, jimena) -> 
+        message("es matias hijo de jimena", "SI", i) 
+    ; 
+        message("hijos de jimena", "NO", i) 
+    ), nl.
+boton_esJoaqinHermanoMatias(press):-
+    (es_hermano_de(joaquin, matias) -> 
+        message("es joaquin hermano de Matias", "SI", i) 
+    ; 
+        message("hijos de jimena", "NO", i) 
+    ), nl.
+boton_quienHijoDeJimena(press):-
+    es_hijo_de(X, jimena),message("hijo de Jimena ", print(X), i) ,nl,ln.
+
+
+boton_quienEsHeramanodeJoaquin(press):-
+    es_hermano_de(joaquin, X) ,message("hermanos de joaquin", print(X), i) ,nl,ln.
+boton_estia(press):-
+	read(Nombre, "Ingrese el nombre de la persona que desea consultar:"),
+    es_tia(Nombre, X) ,message("es tia", print(X), i) ,nl,ln.
+boton_estio(press):-
+	read(Nombre, "Ingrese el nombre de la persona que desea consultar:"),
+    es_tio(Nombre, X) ,message("es tia", print(X), i) ,nl,ln.
+
+
 %crear la subfuncion para prestar enfermedad padece
 
 que_enfermedad_padece(press):-  
